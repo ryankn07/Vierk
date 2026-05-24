@@ -74,7 +74,7 @@ fun SettingsScreen(
                 Column(modifier = Modifier.fillMaxWidth()) {
                     SettingsToggleRow(
                         title = "Monitoring Enabled",
-                        subtitle = "Perform threat evaluation on folder items.",
+                        subtitle = "Schedule periodic checks and allow manual scans.",
                         checked = viewModel.isMonitoringEnabled,
                         onCheckedChange = { viewModel.toggleMonitoring(it) },
                         modifier = Modifier.testTag("toggle_monitoring")
@@ -82,7 +82,7 @@ fun SettingsScreen(
                     HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = Color(0xFFF2F0F4))
                     SettingsToggleRow(
                         title = "Push Notifications On-Risk",
-                        subtitle = "Alert instantly if suspicious features are flagged.",
+                        subtitle = "Alert when a scan finds suspicious features.",
                         checked = viewModel.isNotificationsEnabled,
                         onCheckedChange = { viewModel.toggleNotifications(it) },
                         modifier = Modifier.testTag("toggle_notifications")
@@ -90,7 +90,7 @@ fun SettingsScreen(
                     HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = Color(0xFFF2F0F4))
                     SettingsToggleRow(
                         title = "Scan Downloads Directory Only",
-                        subtitle = "Strictly folder-scoped storage sandbox.",
+                        subtitle = "Only the system Downloads folder is accepted.",
                         checked = true, // Force locked
                         enabled = false, // Locked to prevent unnecessary permission requests
                         onCheckedChange = {},
@@ -130,7 +130,7 @@ fun SettingsScreen(
                     }
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "Because modern Android aggressively manages resources, background sweeps may experience latency. Opening the app or tapping [Scan Now] on the Home screen initiates immediate real-time synchronization.",
+                        text = "Scheduled scans are periodic and may be delayed by Android battery management. Opening the app or tapping [Scan Now] starts an immediate scan.",
                         fontSize = 11.sp,
                         color = Color(0xFF49454E),
                         lineHeight = 15.sp
@@ -150,14 +150,14 @@ fun SettingsScreen(
                 Column(modifier = Modifier.fillMaxWidth()) {
                     SettingsToggleRow(
                         title = "Android Installers (.apk, .xapk, .apks)",
-                        subtitle = "Diligently evaluates binary manifest & permission risk combos.",
+                        subtitle = "Checks installer structure and manifest string indicators.",
                         checked = viewModel.scanApk,
                         onCheckedChange = { viewModel.toggleScanApk(it) }
                     )
                     HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = Color(0xFFF2F0F4))
                     SettingsToggleRow(
                         title = "Compressed Archives (.zip)",
-                        subtitle = "Inspects entry mappings for nested droppers/exploits.",
+                        subtitle = "Checks entries for nested installers, scripts, and traversal paths.",
                         checked = viewModel.scanZip,
                         onCheckedChange = { viewModel.toggleScanZip(it) }
                     )
@@ -171,7 +171,7 @@ fun SettingsScreen(
                     HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = Color(0xFFF2F0F4))
                     SettingsToggleRow(
                         title = "Word / Office Charts (.docx, .xlsx)",
-                        subtitle = "Searches for embedded macros & suspicious external hyper-links.",
+                        subtitle = "Searches extractable Office containers for macros and links.",
                         checked = viewModel.scanDoc,
                         onCheckedChange = { viewModel.toggleScanDoc(it) }
                     )

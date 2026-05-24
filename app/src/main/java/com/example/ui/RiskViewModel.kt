@@ -1,6 +1,7 @@
 package com.example.ui
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,6 +12,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.model.ScanHistory
 import com.example.data.preferences.SettingsManager
 import com.example.data.repository.ScanRepository
+import com.example.util.DownloadFolderPolicy
+import com.example.util.DownloadScanScheduler
 import com.example.util.FolderMonitor
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -30,6 +33,18 @@ class RiskViewModel(
 ) : ViewModel() {
 
     private val TAG = "RiskViewModel"
+    init {
+        val savedUri = settingsManager.grantedFolderUri
+        if (!savedUri.isNullOrBlank() &&
+            !DownloadFolderPolicy.isDownloadsTree(appContext, Uri.parse(savedUri))
+        ) {
+            settingsManager.grantedFolderUri = null
+            settingsManager.grantedFolderName = null
+            DownloadScanScheduler.cancel(appContext)
+        } else if (settingsManager.isMonitoringEnabled && !savedUri.isNullOrBlank()) {
+            DownloadScanScheduler.schedule(appContext)
+        }
+    }
 
     // Backed by Flow for reactive UI state
     val scanHistoryState: StateFlow<List<ScanHistory>> = repository.allHistoryFlow
@@ -90,14 +105,24 @@ class RiskViewModel(
         settingsManager.grantedFolderName = name
         grantedFolderUri = uri
         grantedFolderName = name
+        DownloadScanScheduler.schedule(appContext)
         
         // Trigger an automatic introductory scan of the newly added folder!
         triggerFolderScan()
     }
 
+    fun rejectFolderSelection(message: String) {
+        scanStatusMessage = message
+    }
+
     fun toggleMonitoring(enabled: Boolean) {
         settingsManager.isMonitoringEnabled = enabled
         isMonitoringEnabled = enabled
+        if (enabled && grantedFolderUri.isNotEmpty()) {
+            DownloadScanScheduler.schedule(appContext)
+        } else {
+            DownloadScanScheduler.cancel(appContext)
+        }
     }
 
     fun toggleNotifications(enabled: Boolean) {
@@ -163,7 +188,7 @@ class RiskViewModel(
                 )
 
                 scanStatusMessage = if (resultsCount > 0) {
-                    "Scan complete: Found and flagged $resultsCount new/modified files."
+                    "Scan complete: analyzed $resultsCount new or modified files."
                 } else {
                     "Scan complete: No new files identified."
                 }
@@ -186,7 +211,7 @@ class RiskViewModel(
     fun deleteScan(id: Long) {
         viewModelScope.launch {
             repository.deleteScanHistoryId(id)
-            scanStatusMessage = "File records deleted."
+            scanStatusMessage = "Scan history record deleted. The file itself was not removed."
         }
     }
 }

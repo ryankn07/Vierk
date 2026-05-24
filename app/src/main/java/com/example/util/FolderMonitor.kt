@@ -42,12 +42,13 @@ object FolderMonitor {
 
         // Read all existing records to determine what to skip
         val allExisting = repository.allHistoryFlow.first()
-        val scannedMap = allExisting.associateBy { it.fileName + "_" + it.fileSize }
+        val scannedMap = allExisting.associateBy {
+            listOf(it.fileName, it.fileSize, it.sourceLastModified).joinToString("|")
+        }
 
         var newScansCount = 0
 
         for (file in files) {
-            val nameLower = file.displayName.lowercase()
             val ext = file.displayName.substringAfterLast('.', "").lowercase()
 
             // Filter enabled extensions
@@ -65,8 +66,8 @@ object FolderMonitor {
                 continue
             }
 
-            // Check if file is already scanned (filename + size match fits SAF very well)
-            val identifier = file.displayName + "_" + file.size
+            // SAF does not expose stable file paths, so include modified time to catch same-size replacements.
+            val identifier = listOf(file.displayName, file.size, file.lastModified).joinToString("|")
             if (scannedMap.containsKey(identifier)) {
                 // Already scanned, skip and do not waste operations
                 continue
@@ -88,7 +89,8 @@ object FolderMonitor {
                 fileSize = result.fileSize,
                 riskLevel = result.riskLevel,
                 riskReasons = result.riskReasons.joinToString("\n"),
-                timestamp = file.lastModified.coerceAtLeast(System.currentTimeMillis()),
+                timestamp = System.currentTimeMillis(),
+                sourceLastModified = file.lastModified,
                 packageId = result.packageId,
                 permissions = result.permissions.joinToString(","),
                 extractedUrls = result.extractedUrls.joinToString(",")

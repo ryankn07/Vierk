@@ -77,7 +77,7 @@ fun HomeScreen(
                                 color = Color(0xFF1D1B1E)
                             )
                             Text(
-                                "Downloads Monitor",
+                                "Downloads Scanner",
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF6750A4)
@@ -252,7 +252,7 @@ fun FolderStatusCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = if (isGranted) "Monitoring Active" else "Action Required",
+                        text = if (isGranted) "Downloads Folder Connected" else "Action Required",
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.titleSmall,
                         color = textColor
@@ -260,7 +260,7 @@ fun FolderStatusCard(
                 }
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = if (isGranted) "/storage/emulated/0/$folderName" else "Grant Folder permission to start scanning.",
+                    text = if (isGranted) folderName else "Grant Downloads folder permission to start scanning.",
                     fontSize = 13.sp,
                     color = textColor.copy(alpha = 0.85f),
                     maxLines = 1,
@@ -325,7 +325,7 @@ fun ScanControlCard(
                         color = Color(0xFF1D1B1E)
                     )
                     Text(
-                        "Scans only newly appended documents",
+                        "Runs on app open, Scan Now, and scheduled sweeps",
                         fontSize = 11.sp,
                         color = Color(0xFF49454E)
                     )
@@ -545,7 +545,7 @@ fun ScanHistoryItem(
                 Spacer(modifier = Modifier.height(2.dp))
 
                 Text(
-                    text = "$formattedTime • ${formatSize(scan.fileSize)}",
+                    text = "$formattedTime - ${formatSize(scan.fileSize)}",
                     fontSize = 10.sp,
                     color = Color(0xFF49454E)
                 )
@@ -594,7 +594,7 @@ fun EmptyHistoryPlaceholder(isFolderConnected: Boolean) {
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                "No documents parsed yet.",
+                "No files analyzed yet.",
                 fontWeight = FontWeight.Bold,
                 fontSize = 15.sp,
                 color = Color(0xFF1D1B1E)
@@ -602,9 +602,9 @@ fun EmptyHistoryPlaceholder(isFolderConnected: Boolean) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = if (isFolderConnected) {
-                    "Press [Scan Now] above to list and evaluate materials in your selected Downloads directory!"
+                    "Press [Scan Now] above to evaluate new or changed files in Downloads."
                 } else {
-                    "Please tap [Grant Folder] at the top and select your Downloads directory to begin monitoring."
+                    "Please tap [Grant] at the top and select your system Downloads folder."
                 },
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                 fontSize = 12.sp,

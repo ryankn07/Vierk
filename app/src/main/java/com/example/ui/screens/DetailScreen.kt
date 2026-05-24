@@ -156,7 +156,7 @@ fun DetailScreen(
                         Spacer(modifier = Modifier.height(6.dp))
 
                         Text(
-                            text = "Path: Downloads/${scan.fileName}",
+                            text = "Scoped location: Downloads/${scan.fileName}",
                             fontSize = 11.sp,
                             color = Color(0xFF49454E),
                             fontFamily = FontFamily.Monospace
@@ -189,7 +189,7 @@ fun DetailScreen(
                             Spacer(modifier = Modifier.width(14.dp))
                             Column {
                                 Text(
-                                    "🚨 SECURITY ADVISORY",
+                                    "SECURITY ADVISORY",
                                     fontWeight = FontWeight.Black,
                                     fontSize = 12.sp,
                                     color = riskColor,
@@ -197,7 +197,7 @@ fun DetailScreen(
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
-                                    text = "This file contains features matching common exploit vectors or dangerous permission configurations. Installing or opening this executable could yield device controls back to remote hosts or allow message manipulation.",
+                                    text = "This file matched one or more local risk rules. Treat this result as a warning signal and verify the source before opening or installing it.",
                                     fontSize = 12.sp,
                                     color = Color(0xFF1D1B1E),
                                     lineHeight = 16.sp
@@ -238,7 +238,7 @@ fun DetailScreen(
                                 verticalAlignment = Alignment.Top
                             ) {
                                 Text(
-                                    text = "•",
+                                    text = "-",
                                     fontWeight = FontWeight.Bold,
                                     color = riskColor,
                                     modifier = Modifier.width(16.dp)

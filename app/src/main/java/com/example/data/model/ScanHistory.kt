@@ -15,6 +15,7 @@ data class ScanHistory(
     val riskLevel: String, // "Safe", "Suspicious", "High Risk", "Unknown"
     val riskReasons: String, // Newline separated risk explanation messages
     val timestamp: Long = System.currentTimeMillis(),
+    val sourceLastModified: Long = 0L,
     val packageId: String? = null,
     val permissions: String? = null, // Comma-separated list of permissions (APKs Only)
     val extractedUrls: String? = null // Comma-separated list of URLs

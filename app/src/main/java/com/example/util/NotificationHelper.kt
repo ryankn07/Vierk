@@ -39,7 +39,7 @@ object NotificationHelper {
         }
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, flags)
 
-        val alertTitle = "⚠️ $riskLevel Threat Detected!"
+        val alertTitle = "$riskLevel file risk detected"
         val alertText = "File: \"$fileName\" was flagged. $reason"
 
         val iconRes = android.R.drawable.stat_sys_warning
