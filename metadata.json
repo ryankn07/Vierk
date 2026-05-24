@@ -1,0 +1,6 @@
+{
+  "name": "Download Risk Guard",
+  "description": "An early-warning analyzer that watches your Downloads folder for security risks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
