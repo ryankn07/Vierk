@@ -130,7 +130,7 @@ fun SettingsScreen(
                     }
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "Scheduled scans are periodic and may be delayed by Android battery management. Opening the app or tapping [Scan Now] starts an immediate scan.",
+                        text = "Scheduled scans are periodic and may be delayed by Android battery management. Opening the app or tapping [Scan Now] starts a scan now.",
                         fontSize = 11.sp,
                         color = Color(0xFF49454E),
                         lineHeight = 15.sp

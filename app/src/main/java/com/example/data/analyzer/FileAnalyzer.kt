@@ -153,7 +153,7 @@ object FileAnalyzer {
             // Fallback default message if safe
             if (riskReasons.isEmpty()) {
                 riskLevel = "Safe"
-                riskReasons.add("No immediate indicators of phishing, unrequested scripting, spoofing, or dangerous permission combos identified.")
+                riskReasons.add("No local indicators of phishing, unrequested scripting, spoofing, or dangerous permission combos identified.")
             }
 
             return ScanResult(
@@ -521,7 +521,7 @@ object FileAnalyzer {
                 }
                 if (text.contains("/OpenAction") || text.contains("/AA")) {
                     meta.riskLevel = "Suspicious"
-                    meta.riskReasons.add("Suspicious PDF payload: Immediate OpenAction triggers found (executes logic instantly upon opening).")
+                    meta.riskReasons.add("Suspicious PDF payload: OpenAction triggers found (runs viewer actions when opened).")
                 }
                 if (text.contains("/Launch")) {
                     meta.riskLevel = "High Risk"
